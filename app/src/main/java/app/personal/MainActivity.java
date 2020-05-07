@@ -621,6 +621,13 @@ public class MainActivity extends AppCompatActivity {
             ((TextView) row.findViewById(R.id.tdHour)).setText(recordsInventario.get(i).estadositio);
             ((TextView) row.findViewById(R.id.tdAdvance)).setText(recordsInventario.get(i).condicion);
             ((TextView) row.findViewById(R.id.tdQR)).setText(recordsInventario.get(i).qr);
+            ((TextView) row.findViewById(R.id.id_clone_x)).setText(recordsInventario.get(i).id_clon);
+            ((TextView) row.findViewById(R.id.id_edad_x)).setText(recordsInventario.get(i).id_edad);
+            ((TextView) row.findViewById(R.id.linea_x)).setText(recordsInventario.get(i).linea);
+            ((TextView) row.findViewById(R.id.nro_arbol_x)).setText(recordsInventario.get(i).nro_arbol);
+            ((TextView) row.findViewById(R.id.dt_x)).setText(recordsInventario.get(i).dt);
+            ((TextView) row.findViewById(R.id.observaciones_x)).setText(recordsInventario.get(i).observaciones);
+            ((TextView) row.findViewById(R.id.fechaauditoria_x)).setText(recordsInventario.get(i).fechaauditoria);
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -632,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (current_idIP.equals(firstText)) {
                         current_idIP = "";
-                        selectRow("0", new Date().toString(), "0",
+                        selectRow("","","","","","","0", new Date().toString(), "0",
                                 "0", "0", "0");
                         spClon.setSelection(0);
                         spWorkerZone.setSelection(0);
@@ -645,7 +652,13 @@ public class MainActivity extends AppCompatActivity {
 
                     current_idIP = firstText;
 
-                    selectRow(((TextView) t.getChildAt(2)).getText().toString(),
+                    selectRow(((TextView) t.getChildAt(15)).getText().toString(),
+                            ((TextView) t.getChildAt(12)).getText().toString(),
+                            ((TextView) t.getChildAt(13)).getText().toString(),
+                            ((TextView) t.getChildAt(14)).getText().toString(),
+                            ((TextView) t.getChildAt(16)).getText().toString(),
+                            ((TextView) t.getChildAt(11)).getText().toString(),
+                            ((TextView) t.getChildAt(2)).getText().toString(),
                             ((TextView) t.getChildAt(4)).getText().toString(),
                             ((TextView) t.getChildAt(6)).getText().toString(),
                             ((TextView) t.getChildAt(8)).getText().toString(),
@@ -837,15 +850,21 @@ public class MainActivity extends AppCompatActivity {
         cuadrilla = myDatabase.getCuadrilla(dniSupervisor);
     }
 
-    public void selectRow( String id_workerZone, String id_estadofisico, String id_estadosanitario,
+    public void selectRow( String dt, String nro_linea, String nro_arbol, String edad, String observaciones,String id_clon,String id_workerZone, String id_estadofisico, String id_estadosanitario,
                           String id_estadositio, String id_condicion, String QR) {
         fecha = fecha;
+        selectSpinnerItemByValue(spClon, id_clon);
         selectSpinnerItemByValue(spWorkerZone, id_workerZone);
         selectSpinnerItemByValue(spEstadoFisico, id_estadofisico);
         selectSpinnerItemByValue(spEstadoSanitario, id_estadosanitario);
         selectSpinnerItemByValue(spEstadoSitio, id_estadositio);
         selectSpinnerItemByValue(spCondicion, id_condicion);
         txtQr.setText(QR);
+        txtObservacion.setText(observaciones);
+        txtDT.setText(dt);
+        txtNroLinea.setText(nro_linea);
+        txtNroArbol.setText(nro_arbol);
+        txtEdad.setText(edad);
 
     }
 

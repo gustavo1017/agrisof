@@ -89,4 +89,54 @@
         android:layout_weight="0.6"
         android:gravity="center"
         android:textStyle="bold" />
+    <TextView
+        android:id="@+id/id_clone_x"
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/linea_x"
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/nro_arbol_x"
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/id_edad_x"
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/dt_x"
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/observaciones_x"
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/fechaauditoria_x"
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textStyle="bold" />
+
 </TableRow>

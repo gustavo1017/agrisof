@@ -375,11 +375,15 @@ public class DataBaseHelper extends SQLiteAssetHelper {
                     "\tI.id_zonatrabajo,\n" +
                     "\tI.linea,\n" +
                     "\tI.id_clon,\n" +
+                    "\tI.nro_arbol,\n" +
                     "\tI.id_condicion,\n" +
+                    "\tI.id_edad,\n" +
+                    "\tI.dt,\n" +
                     "\tI.id_estadofisico,\n" +
                     "\tI.id_estadosanitario,\n" +
                     "\tI.id_estadositio,\n" +
                     "\tI.observaciones,\n" +
+                    "\tI.id_usuario,\n" +
                     "\tI.fechaauditoria,\n" +
                     "\tI.QR\n"  +
                     "\tFROM INVENTARIOPLANTAS I\n"  +
@@ -391,23 +395,62 @@ public class DataBaseHelper extends SQLiteAssetHelper {
 
             stringBuilder.append("Fecha");
             stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("ID_zonatrabajo");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("\t");
             stringBuilder.append("linea");
             stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("ID_clon");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("nro_arbol");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("\t");
             stringBuilder.append("ID_condicion");
             stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("ID_edad");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("DT");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("ID_estadofisico");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("\t");
             stringBuilder.append("ID_estadosanitario");
             stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("ID_estadositio");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("\t");
             stringBuilder.append("Observaciones");
             stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("ID_usuario");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("fechaauditoria");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
+            stringBuilder.append("\t");
             stringBuilder.append("\t");
             stringBuilder.append("QR");
             stringBuilder.append("\t");
@@ -425,38 +468,82 @@ public class DataBaseHelper extends SQLiteAssetHelper {
 
                         stringBuilder.append(dateList[0] + "-" + dateList[1] + "-" + dateList[2]);
                         stringBuilder.append("\t");
+                        stringBuilder.append("\t");
 
                         stringBuilder.append(cur.getString(1).trim());
                         stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+
 
                         stringBuilder.append(cur.getString(2).trim());
                         stringBuilder.append("\t");
-
+                        stringBuilder.append("\t");
                         stringBuilder.append(cur.getString(3).trim());
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
 
                         stringBuilder.append(cur.getString(4).trim());
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
                         stringBuilder.append("\t");
 
                         stringBuilder.append(cur.getString(5).trim());
                         stringBuilder.append("\t");
                         stringBuilder.append("\t");
                         stringBuilder.append("\t");
-
                         stringBuilder.append(cur.getString(6).trim());
+                        stringBuilder.append("\t");
                         stringBuilder.append("\t");
                         stringBuilder.append("\t");
 
                         stringBuilder.append(cur.getString(7).trim());
                         stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
 
                         stringBuilder.append(cur.getString(8).trim());
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
                         stringBuilder.append("\t");
 
                         stringBuilder.append(cur.getString(9).trim());
                         stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
 
                         stringBuilder.append(cur.getString(10).trim());
                         stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+
+                        stringBuilder.append(cur.getString(11).trim());
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+
+                        stringBuilder.append(cur.getString(12).trim());
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+
+                        stringBuilder.append(cur.getString(13).trim());
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
+
+                        stringBuilder.append(cur.getString(14).trim());
+                        stringBuilder.append("\t");
+
 
 
 
@@ -469,7 +556,7 @@ public class DataBaseHelper extends SQLiteAssetHelper {
             db.close();
 
             String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-            String name = "tareo";
+            String name = "INVENTARIO";
 
             SimpleDateFormat formatterHour = new SimpleDateFormat("HH:mm:ss");
             SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -771,11 +858,15 @@ public class DataBaseHelper extends SQLiteAssetHelper {
                 "ESI.descripcion as 'estado_sitio',\n" +
                 "I.id_estadositio," +
                 "CON.descripcion as 'condicion',\n" +
+                "I.id_condicion," +
                 "I.dt as 'dt',\n" +
                 "I.linea as 'linea',\n" +
-                "I.nro_arbol as 'nro_arbol',\n" +
                 "I.id_edad as 'edad',\n" +
+                "I.nro_arbol as 'nro_arbol',\n" +
                 "I.observaciones as 'obsevaciones',\n" +
+                "I.id_clon as 'id_clon',\n" +
+                "I.id_usuario as 'id_usuario',\n" +
+                "I.fechaauditoria as 'fechaauditoria',\n" +
                 "I.QR\n" +
                 "FROM INVENTARIOPLANTAS I\n" +
                 "LEFT JOIN CLON C ON I.id_clon = C.id_clon\n" +
@@ -784,8 +875,7 @@ public class DataBaseHelper extends SQLiteAssetHelper {
                 "LEFT JOIN ESTADO_FISICO EF ON I.id_estadofisico = EF.id_estadofisico\n" +
                 "LEFT JOIN ESTADO_SANITARIO EST ON I.id_estadosanitario = EST.id_estadosanitario\n"  +
                 "LEFT JOIN ESTADO_SITIO ESI ON I.id_estadositio = ESI.id_estadositio\n"  +
-                "WHERE I.id_usuario = '" + "demo01" + "'" +
-                "AND I.saved = 0";
+                "WHERE I.deleted = 0";
 
         Cursor cur = db.rawQuery(query, null);
 
@@ -804,10 +894,14 @@ public class DataBaseHelper extends SQLiteAssetHelper {
                 record.condicion = cur.getString(9);
                 record.id_condicion = cur.getString(10);
                 record.dt = cur.getString(11);
-                record.nro_linea = cur.getString(12);
+                record.linea = cur.getString(12);
                 record.id_edad = cur.getString(13);
-                record.observaciones = cur.getString(14);
-                record.qr = cur.getString(15);
+                record.nro_arbol = cur.getString(14);
+                record.observaciones = cur.getString(15);
+                record.id_clon = cur.getString(16);
+                record.id_usuario = cur.getString(17);
+                record.fechaauditoria = cur.getString(18);
+                record.qr = cur.getString(19);
 
                 object.add(record);
             } while (cur.moveToNext());
@@ -929,12 +1023,12 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         ContentValues nuevoRegistro = new ContentValues();
         nuevoRegistro.put("fecha", fecha);
         nuevoRegistro.put("id_zonatrabajo", id_zonatrabajo);
-        nuevoRegistro.put("linea", 0);
+        nuevoRegistro.put("linea", Integer.parseInt(nroLinea));
         nuevoRegistro.put("id_clon", id_clon);
-        nuevoRegistro.put("nro_arbol ", 0);
+        nuevoRegistro.put("nro_arbol ", Integer.parseInt(nroArbol));
         nuevoRegistro.put("id_condicion", id_condicion);
-        nuevoRegistro.put("id_edad", 2.01);
-        nuevoRegistro.put("dt", 10);
+        nuevoRegistro.put("id_edad", Float.parseFloat(edad));
+        nuevoRegistro.put("dt", Float.parseFloat(dt));
         nuevoRegistro.put("id_estadofisico", id_estadofisico);
         nuevoRegistro.put("id_estadosanitario", id_estadosanitario);
         nuevoRegistro.put("id_estadositio", id_estadositio);
@@ -942,11 +1036,12 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         nuevoRegistro.put("id_usuario", "demo01");
         nuevoRegistro.put("fechaauditoria", new Date().toString());
         nuevoRegistro.put("QR", qr);
+        nuevoRegistro.put("deleted",0);
+        nuevoRegistro.put("saved",1);
 
         // db.insert("COSTOS", null, nuevoRegistro);
-        long b = db.insertWithOnConflict("INVENTARIOPLANTAS", null, nuevoRegistro,
+        db.insertWithOnConflict("INVENTARIOPLANTAS", null, nuevoRegistro,
                 SQLiteDatabase.CONFLICT_REPLACE);
-        int a = 0;
     }
 
     public void updateMapeo(String id_costo, String id_cuadrilla, String fecha, String id_personal,
@@ -985,19 +1080,21 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         ContentValues nuevoRegistro = new ContentValues();
         nuevoRegistro.put("fecha", fecha);
         nuevoRegistro.put("id_zonatrabajo", id_zonatrabajo);
-        nuevoRegistro.put("linea", 0);
+        nuevoRegistro.put("linea", Integer.parseInt(nroLinea));
         nuevoRegistro.put("id_clon", id_clon);
-        nuevoRegistro.put("nro_arbol ", 0);
+        nuevoRegistro.put("nro_arbol ", Integer.parseInt(nroArbol));
         nuevoRegistro.put("id_condicion", id_condicion);
-        nuevoRegistro.put("id_edad", 2.01);
-        nuevoRegistro.put("dt", 10);
+        nuevoRegistro.put("id_edad", Float.parseFloat(edad));
+        nuevoRegistro.put("dt", Float.parseFloat(dt));
         nuevoRegistro.put("id_estadofisico", id_estadofisico);
         nuevoRegistro.put("id_estadosanitario", id_estadosanitario);
         nuevoRegistro.put("id_estadositio", id_estadositio);
         nuevoRegistro.put("observaciones", observacion);
-        nuevoRegistro.put("id_usuario", "DEMO01");
+        nuevoRegistro.put("id_usuario", "demo01");
         nuevoRegistro.put("fechaauditoria", new Date().toString());
         nuevoRegistro.put("QR", qr);
+        nuevoRegistro.put("deleted",0);
+        nuevoRegistro.put("saved",1);
 
         db.update("INVENTARIOPLANTAS", nuevoRegistro, "id_IP =" + id_IP, null);
     }
