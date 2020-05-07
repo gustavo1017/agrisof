@@ -76,6 +76,7 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         db.execSQL("delete from ESTADO_SITIO");
         db.execSQL("delete from CLON");
         db.execSQL("delete from COSTOS WHERE saved=0 AND deleted = 0");
+        db.execSQL("delete from INVENTARIOPLANTAS WHERE saved=0 AND deleted = 0");
 
         //insert
         readExcelFile(context, "analisis1", 4); // ZONA TRABAJO
@@ -362,7 +363,7 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         }
 
 
-        deleteAllCostos();
+        deleteAllInventarioPlantas();
         return success;
     }
 
@@ -370,142 +371,95 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             String query = "SELECT \n" +
-                    "\tC.fecha, \n" +
-                    "\tC.id_personal,\n" +
-                    "\tC.id_actividad,\n" +
-                    "\tC.id_zonatrabajo,\n" +
-                    "\tC.cantidad,\n" +
-                    "\tC.id_enlace,\n" +
-                    "\tC.QR,\n" +
-                    "\tC.id_cuadrilla\n" +
-                    "\tFROM COSTOS C\n" +
-                    "\tINNER JOIN CUADRILLA CU ON C.id_cuadrilla = CU.id_cuadrilla\n" +
-                    "\tWHERE CU.id_personal = '" + dni_supervisor + "'" +
-                    "\tAND C.deleted = 0";
+                    "\tI.fecha, \n" +
+                    "\tI.id_zonatrabajo,\n" +
+                    "\tI.linea,\n" +
+                    "\tI.id_clon,\n" +
+                    "\tI.id_condicion,\n" +
+                    "\tI.id_estadofisico,\n" +
+                    "\tI.id_estadosanitario,\n" +
+                    "\tI.id_estadositio,\n" +
+                    "\tI.observaciones,\n" +
+                    "\tI.fechaauditoria,\n" +
+                    "\tI.QR\n"  +
+                    "\tFROM INVENTARIOPLANTAS I\n"  +
+                    "\tWHERE I.deleted = 0";
 
             Cursor cur = db.rawQuery(query, null);
 
             StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.append("Numero_Parte");
-            stringBuilder.append("\t");
-
             stringBuilder.append("Fecha");
             stringBuilder.append("\t");
-
-            stringBuilder.append("ID_Producto");
+            stringBuilder.append("ID_zonatrabajo");
             stringBuilder.append("\t");
-
-            stringBuilder.append("ID_Maquinaria");
+            stringBuilder.append("linea");
             stringBuilder.append("\t");
-
-            stringBuilder.append("ID_Personal");
+            stringBuilder.append("ID_clon");
             stringBuilder.append("\t");
-
-            stringBuilder.append("ID_Actividad");
+            stringBuilder.append("ID_condicion");
             stringBuilder.append("\t");
-
-            stringBuilder.append("ID_Zonatrabajo");
+            stringBuilder.append("ID_estadofisico");
             stringBuilder.append("\t");
-
-            stringBuilder.append("ID_Proveedor");
+            stringBuilder.append("ID_estadosanitario");
             stringBuilder.append("\t");
-
-            stringBuilder.append("cantidad");
+            stringBuilder.append("ID_estadositio");
             stringBuilder.append("\t");
-
-            stringBuilder.append("Costo_Unitario_Standar");
-            stringBuilder.append("\t");
-
-            stringBuilder.append("monto");
-            stringBuilder.append("\t");
-
-            stringBuilder.append("Tipo_Costo");
-            stringBuilder.append("\t");
-
             stringBuilder.append("Observaciones");
             stringBuilder.append("\t");
-
-            stringBuilder.append("Campana");
+            stringBuilder.append("fechaauditoria");
             stringBuilder.append("\t");
-
-            stringBuilder.append("Tipo_Cambio");
-            stringBuilder.append("\t");
-
-            stringBuilder.append("id_Enlace");
-            stringBuilder.append("\t");
-
             stringBuilder.append("QR");
             stringBuilder.append("\t");
 
-            stringBuilder.append("ID_Cuadrilla");
-            stringBuilder.append("\n");
 
             int i = 1;
             if (cur.moveToFirst()) {
                 do {
 
-                    if (!rowValidation(cur.getString(0), cur.getString(1),
-                            cur.getString(2), cur.getString(3),
-                            cur.getString(4), cur.getString(5))) {
+                        stringBuilder.append("\n");
 
                         String date = cur.getString(0);
                         String[] dateList = date.split("/");
 
-                        stringBuilder.append(dateList[0] + dateList[1]  + dateList[2]);
-                        stringBuilder.append("\t");
 
                         stringBuilder.append(dateList[0] + "-" + dateList[1] + "-" + dateList[2]);
                         stringBuilder.append("\t");
 
-                        stringBuilder.append("000001");
+                        stringBuilder.append(cur.getString(1).trim());
                         stringBuilder.append("\t");
 
-                        stringBuilder.append("000001");
+                        stringBuilder.append(cur.getString(2).trim());
                         stringBuilder.append("\t");
 
-                        stringBuilder.append(cur.getString(1));
+                        stringBuilder.append(cur.getString(3).trim());
+
+                        stringBuilder.append(cur.getString(4).trim());
                         stringBuilder.append("\t");
 
-                        stringBuilder.append(cur.getString(2));
+                        stringBuilder.append(cur.getString(5).trim());
+                        stringBuilder.append("\t");
+                        stringBuilder.append("\t");
                         stringBuilder.append("\t");
 
-                        stringBuilder.append(cur.getString(3));
+                        stringBuilder.append(cur.getString(6).trim());
+                        stringBuilder.append("\t");
                         stringBuilder.append("\t");
 
-                        stringBuilder.append("00000000001");
+                        stringBuilder.append(cur.getString(7).trim());
                         stringBuilder.append("\t");
 
-                        stringBuilder.append(cur.getString(4));
+                        stringBuilder.append(cur.getString(8).trim());
                         stringBuilder.append("\t");
 
-                        stringBuilder.append("1");
+                        stringBuilder.append(cur.getString(9).trim());
                         stringBuilder.append("\t");
 
-                        stringBuilder.append("1");
+                        stringBuilder.append(cur.getString(10).trim());
                         stringBuilder.append("\t");
 
-                        stringBuilder.append("H");
-                        stringBuilder.append("\t");
 
-                        stringBuilder.append("app");
-                        stringBuilder.append("\t");
 
-                        stringBuilder.append("1");
-                        stringBuilder.append("\t");
-
-                        stringBuilder.append("1");
-                        stringBuilder.append("\t");
-
-                        stringBuilder.append(cur.getString(5));
-                        stringBuilder.append("\t");
-
-                        stringBuilder.append(cur.getString(6));
-                        stringBuilder.append("\t");
-
-                        stringBuilder.append(cur.getString(7));
-                        stringBuilder.append("\n");
-                    }
 
                     i++;
                 } while (cur.moveToNext());
@@ -545,9 +499,9 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         return rtn;
     }
 
-    public boolean deleteAllCostos() {
+    public boolean deleteAllInventarioPlantas() {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM COSTOS");
+        db.execSQL("DELETE FROM INVENTARIOPLANTAS");
         return true;
     }
 
@@ -801,6 +755,69 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         return object;
     }
 
+    //MIO
+    public ArrayList<ObjectRecordInventario> QueryTable2(String dni_supervisor) {
+        ArrayList<ObjectRecordInventario> object = new ArrayList<ObjectRecordInventario>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT\n" +
+                "I.id_IP,\n" +
+                "ZT.descripcion as 'zona_trabajo',\n" +
+                "I.id_zonatrabajo," +
+                "EF.descripcion as 'estado_fisico',\n" +
+                "I.id_estadofisico," +
+                "EST.descripcion as 'estado_sanitario',\n" +
+                "I.id_estadosanitario," +
+                "ESI.descripcion as 'estado_sitio',\n" +
+                "I.id_estadositio," +
+                "CON.descripcion as 'condicion',\n" +
+                "I.dt as 'dt',\n" +
+                "I.linea as 'linea',\n" +
+                "I.nro_arbol as 'nro_arbol',\n" +
+                "I.id_edad as 'edad',\n" +
+                "I.observaciones as 'obsevaciones',\n" +
+                "I.QR\n" +
+                "FROM INVENTARIOPLANTAS I\n" +
+                "LEFT JOIN CLON C ON I.id_clon = C.id_clon\n" +
+                "LEFT JOIN ZONA_TRABAJO ZT ON I.id_zonatrabajo = ZT.id_zonatrabajo\n" +
+                "LEFT JOIN CONDICION CON ON I.id_condicion = CON.id_condicion\n" +
+                "LEFT JOIN ESTADO_FISICO EF ON I.id_estadofisico = EF.id_estadofisico\n" +
+                "LEFT JOIN ESTADO_SANITARIO EST ON I.id_estadosanitario = EST.id_estadosanitario\n"  +
+                "LEFT JOIN ESTADO_SITIO ESI ON I.id_estadositio = ESI.id_estadositio\n"  +
+                "WHERE I.id_usuario = '" + "demo01" + "'" +
+                "AND I.saved = 0";
+
+        Cursor cur = db.rawQuery(query, null);
+
+        if (cur.moveToFirst()) {
+            do {
+                ObjectRecordInventario record = new ObjectRecordInventario();
+                record.id_IP = cur.getInt(0);
+                record.zonatrabajo = cur.getString(1);
+                record.id_zonatrabajo = cur.getString(2);
+                record.estadofisico = cur.getString(3);
+                record.id_estadofisico = cur.getString(4);
+                record.estadosanitario = cur.getString(5);
+                record.id_estadosanitario = cur.getString(6);
+                record.estadositio = cur.getString(7);
+                record.id_estadositio = cur.getString(8);
+                record.condicion = cur.getString(9);
+                record.id_condicion = cur.getString(10);
+                record.dt = cur.getString(11);
+                record.nro_linea = cur.getString(12);
+                record.id_edad = cur.getString(13);
+                record.observaciones = cur.getString(14);
+                record.qr = cur.getString(15);
+
+                object.add(record);
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+        return object;
+    }
+
     public void insertCuadrilla(String id_cuadrilla, String description, String id_personal) {
         Log.e("test", id_cuadrilla);
         Log.e("test", description);
@@ -865,7 +882,7 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         nuevoRegistro.put("Tipo_Cambio", "");
         nuevoRegistro.put("id_almacen", "");
         nuevoRegistro.put("id_enlace", avance);
-        nuevoRegistro.put("id_usuario", "DEMO01");
+        nuevoRegistro.put("id_usuario", "demo01");
         nuevoRegistro.put("fechaauditoria", new Date().toString());
         nuevoRegistro.put("QR", qr);
 
@@ -921,14 +938,15 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         nuevoRegistro.put("id_estadofisico", id_estadofisico);
         nuevoRegistro.put("id_estadosanitario", id_estadosanitario);
         nuevoRegistro.put("id_estadositio", id_estadositio);
-        nuevoRegistro.put("observaciones", "");
-        nuevoRegistro.put("id_usuario", "DEMO01");
+        nuevoRegistro.put("observaciones", observacion);
+        nuevoRegistro.put("id_usuario", "demo01");
         nuevoRegistro.put("fechaauditoria", new Date().toString());
         nuevoRegistro.put("QR", qr);
 
         // db.insert("COSTOS", null, nuevoRegistro);
-        db.insertWithOnConflict("INVENTARIOPLANTAS", null, nuevoRegistro,
+        long b = db.insertWithOnConflict("INVENTARIOPLANTAS", null, nuevoRegistro,
                 SQLiteDatabase.CONFLICT_REPLACE);
+        int a = 0;
     }
 
     public void updateMapeo(String id_costo, String id_cuadrilla, String fecha, String id_personal,
@@ -959,24 +977,48 @@ public class DataBaseHelper extends SQLiteAssetHelper {
         db.update("COSTOS", nuevoRegistro, "id_costo =" + id_costo, null);
     }
 
-    public void deleteMapeo(String id_costo) {
+    public void updateMapeo2(String id_IP,String fecha, String dt, String id_zonatrabajo,String id_estadofisico,
+                             String nroLinea, String id_estadosanitario,
+                             String nroArbol, String id_condicion,String id_estadositio, String edad,
+                             String id_clon, String observacion,String qr) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues nuevoRegistro = new ContentValues();
+        nuevoRegistro.put("fecha", fecha);
+        nuevoRegistro.put("id_zonatrabajo", id_zonatrabajo);
+        nuevoRegistro.put("linea", 0);
+        nuevoRegistro.put("id_clon", id_clon);
+        nuevoRegistro.put("nro_arbol ", 0);
+        nuevoRegistro.put("id_condicion", id_condicion);
+        nuevoRegistro.put("id_edad", 2.01);
+        nuevoRegistro.put("dt", 10);
+        nuevoRegistro.put("id_estadofisico", id_estadofisico);
+        nuevoRegistro.put("id_estadosanitario", id_estadosanitario);
+        nuevoRegistro.put("id_estadositio", id_estadositio);
+        nuevoRegistro.put("observaciones", observacion);
+        nuevoRegistro.put("id_usuario", "DEMO01");
+        nuevoRegistro.put("fechaauditoria", new Date().toString());
+        nuevoRegistro.put("QR", qr);
+
+        db.update("INVENTARIOPLANTAS", nuevoRegistro, "id_IP =" + id_IP, null);
+    }
+
+    public void deleteMapeo(String id_IP) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues nuevoRegistro = new ContentValues();
         nuevoRegistro.put("deleted", 1);
 
-        db.update("COSTOS", nuevoRegistro, "id_costo=" + id_costo, null);
+        long a = db.update("INVENTARIOPLANTAS", nuevoRegistro, "id_IP=" + id_IP, null);
     }
 
     void saveTablePermanent(String dni_supervisor) {
         SQLiteDatabase db = getWritableDatabase();
 
         String query = "UPDATE\n" +
-                "COSTOS \n" +
+                "INVENTARIOPLANTAS \n" +
                 "SET saved=1\n" +
                 "WHERE \n" +
-                "id_cuadrilla = (SELECT id_cuadrilla\n" +
-                "from CUADRILLA WHERE id_personal = '" + dni_supervisor + "');";
+                "id_usuario =  '" + "demo01" + "';";
 
         db.execSQL(query);
     }

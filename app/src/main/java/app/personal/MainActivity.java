@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     String dniSupervisor = "", current_idCosto = "", current_idIP = "";
     DataBaseHelper myDatabase;
     ArrayList<ObjectRecord> records = new ArrayList<>();
+    ArrayList<ObjectRecordInventario> recordsInventario = new ArrayList<>();
     Spinner spWorker, spWorkerZone, spActivity, spCondicion, spClon, spEstadoFisico, spEstadoSanitario, spEstadoSitio;
     EditText txtHora, txtAvance, txtQr;
     //MIOS
@@ -385,8 +386,23 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (txtHora.getText().toString().isEmpty()) {
-                    MostrarDialogo("Ingrese Hora");
+                if (txtDT.getText().toString().isEmpty()){
+                    MostrarDialogo("Ingrese DT");
+                    return;
+                }
+
+                if (txtNroLinea.getText().toString().isEmpty()){
+                    MostrarDialogo("Ingrese Nro. Linea");
+                    return;
+                }
+
+                if (txtNroArbol.getText().toString().isEmpty()){
+                    MostrarDialogo("Ingrese Nro. Arbol");
+                    return;
+                }
+
+                if (txtObservacion.getText().toString().isEmpty()){
+                    MostrarDialogo("Ingrese Observacion");
                     return;
                 }
 
@@ -395,44 +411,26 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (txtAvance.getText().toString().isEmpty()) {
-                    MostrarDialogo("Ingrese Avance");
-                    return;
-                }
-
                 if (txtQr.getText().toString().isEmpty()) {
                     MostrarDialogo("Escanee un QR");
                     return;
                 }
 
-                if (spWorker.getSelectedItemPosition() <= 0 ||
-                        spWorker.getSelectedItem() == null ||
-                        spWorkerZone.getSelectedItemPosition() <= 0 ||
+                if (spClon.getSelectedItemPosition() <= 0 ||
+                        spClon.getSelectedItem() == null ||
+                        spCondicion.getSelectedItemPosition() <= 0 ||
+                        spCondicion.getSelectedItem() == null ||
                         spWorkerZone.getSelectedItem() == null ||
-                        spActivity.getSelectedItem() == null ||
-                        spActivity.getSelectedItemPosition() <= 0) {
+                        spWorkerZone.getSelectedItemPosition() <= 0 ||
+                        spEstadoFisico.getSelectedItem() == null ||
+                        spEstadoFisico.getSelectedItemPosition() <= 0 ||
+                        spEstadoSanitario.getSelectedItem() == null ||
+                        spEstadoSanitario.getSelectedItemPosition() <= 0||
+                        spEstadoSitio.getSelectedItem() == null ||
+                        spEstadoSitio.getSelectedItemPosition() <= 0) {
 
                     MostrarDialogo("Debe seleccionar todos las opciones");
                     return;
-                }
-
-                if (current_idCosto.length() == 0) {
-                    myDatabase.insertMapeo(cuadrilla.id, fecha, id_personal,
-                            id_actividad, id_zonaTrabajo,
-                            txtHora.getText().toString(), txtAvance.getText().toString(),
-                            txtQr.getText().toString());
-
-                    MostrarDialogo("Se agrego la información");
-                } else {
-                    myDatabase.updateMapeo(current_idCosto, cuadrilla.id, fecha, id_personal,
-                            id_actividad, id_zonaTrabajo,
-                            txtHora.getText().toString(), txtAvance.getText().toString(),
-                            txtQr.getText().toString());
-
-                    MostrarDialogo("Se actualizo la información");
-
-                    current_idCosto = "";
-                    resetTableStyle();
                 }
 
                 if (current_idIP.length() == 0) {
@@ -443,23 +441,29 @@ public class MainActivity extends AppCompatActivity {
 
                     MostrarDialogo("Se agrego la información");
                 } else {
-                    myDatabase.updateMapeo(current_idCosto, cuadrilla.id, fecha, id_personal,
-                            id_actividad, id_zonaTrabajo,
-                            txtHora.getText().toString(), txtAvance.getText().toString(),
+                    myDatabase.updateMapeo2(current_idIP,fecha, txtDT.getText().toString(), id_zonaTrabajo, id_estadofisico,
+                            txtNroLinea.getText().toString(), id_estadosanitario, txtNroArbol.getText().toString(), id_condicion, id_estadositio,
+                            txtEdad.getText().toString(), id_clon, txtObservacion.getText().toString(),
                             txtQr.getText().toString());
 
                     MostrarDialogo("Se actualizo la información");
 
-                    current_idCosto = "";
+                    current_idIP = "";
                     resetTableStyle();
                 }
 
                 RestoreDatabase();
-                spWorker.setSelection(0);
+                spClon.setSelection(0);
                 spWorkerZone.setSelection(0);
-                spActivity.setSelection(0);
-                txtHora.setText("");
-                txtAvance.setText("");
+                spCondicion.setSelection(0);
+                spEstadoFisico.setSelection(0);
+                spEstadoSitio.setSelection(0);
+                spEstadoSanitario.setSelection(0);
+                txtDT.setText("");
+                txtObservacion.setText("");
+                txtNroArbol.setText("");
+                txtNroLinea.setText("");
+                txtEdad.setText("");
                 txtQr.setText("");
             }
         });
@@ -496,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
                 LLenar(spEstadoFisico, 6);
 
                 listEstadoSanitario = myDatabase.RestoreFromDbEstadoSanitario();
-                LLenar(spEstadoFisico, 7);
+                LLenar(spEstadoSanitario, 7);
 
                 listEstadoSitio = myDatabase.RestoreFromDbEstadoSitio();
                 LLenar(spEstadoSitio, 8);
@@ -510,9 +514,8 @@ public class MainActivity extends AppCompatActivity {
         btnRestore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myDatabase.deleteAllCostos();
+                myDatabase.deleteAllInventarioPlantas();
                 myDatabase.LeerInicial(MainActivity.this);
-                myDatabase.readPlanificacion(MainActivity.this);
                 RestoreDatabase();
                 MostrarDialogo("Se restauro satisfactoriamente");
             }
@@ -522,10 +525,10 @@ public class MainActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (current_idCosto.length() == 0) {
+                if (current_idIP.length() == 0) {
                     MostrarDialogo("Seleccione un registro para borrar");
                 } else {
-                    myDatabase.deleteMapeo(current_idCosto);
+                    myDatabase.deleteMapeo(current_idIP);
                     RestoreDatabase();
                     MostrarDialogo("Se elimino el registro");
                 }
@@ -604,22 +607,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void RestoreDatabase() {
-        records = myDatabase.QueryTable(dniSupervisor);
+        recordsInventario = myDatabase.QueryTable2(dniSupervisor);
         table.removeAllViews();
 
-        for (int i = 0; i < records.size(); i++) {
+        for (int i = 0; i < recordsInventario.size(); i++) {
             final TableRow row = (TableRow) LayoutInflater.from(MainActivity.this).inflate(R.layout.attrib_row, null);
-            ((TextView) row.findViewById(R.id.tdId)).setText(String.valueOf(records.get(i).id_costo));
-            ((TextView) row.findViewById(R.id.tdDate)).setText(String.valueOf(records.get(i).fecha));
-            ((TextView) row.findViewById(R.id.tdPersonal)).setText(records.get(i).personal);
-            ((TextView) row.findViewById(R.id.tdIdPersonal)).setText(records.get(i).id_personal);
-            ((TextView) row.findViewById(R.id.tdWorkerZone)).setText(records.get(i).zonatrabajo);
-            ((TextView) row.findViewById(R.id.tdIdWorkerZone)).setText(records.get(i).id_zonatrabajo);
-            ((TextView) row.findViewById(R.id.tdActivity)).setText(records.get(i).actividad);
-            ((TextView) row.findViewById(R.id.tdIdActivity)).setText(records.get(i).id_actividad);
-            ((TextView) row.findViewById(R.id.tdHour)).setText(records.get(i).horas);
-            ((TextView) row.findViewById(R.id.tdAdvance)).setText(records.get(i).avance);
-            ((TextView) row.findViewById(R.id.tdQR)).setText(records.get(i).qr);
+            ((TextView) row.findViewById(R.id.tdId)).setText(String.valueOf(recordsInventario.get(i).id_IP));
+            ((TextView) row.findViewById(R.id.tdDate)).setText(String.valueOf(recordsInventario.get(i).zonatrabajo));
+            ((TextView) row.findViewById(R.id.tdPersonal)).setText(recordsInventario.get(i).zonatrabajo);
+            ((TextView) row.findViewById(R.id.tdWorkerZone)).setText(recordsInventario.get(i).estadofisico);
+            ((TextView) row.findViewById(R.id.tdActivity)).setText(recordsInventario.get(i).estadosanitario);
+            ((TextView) row.findViewById(R.id.tdIdActivity)).setText(recordsInventario.get(i).estadosanitario);
+            ((TextView) row.findViewById(R.id.tdHour)).setText(recordsInventario.get(i).estadositio);
+            ((TextView) row.findViewById(R.id.tdAdvance)).setText(recordsInventario.get(i).condicion);
+            ((TextView) row.findViewById(R.id.tdQR)).setText(recordsInventario.get(i).qr);
 
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -629,20 +630,22 @@ public class MainActivity extends AppCompatActivity {
                     TextView firstTextView = (TextView) t.getChildAt(0);
                     String firstText = firstTextView.getText().toString();
 
-                    if (current_idCosto.equals(firstText)) {
-                        current_idCosto = "";
+                    if (current_idIP.equals(firstText)) {
+                        current_idIP = "";
                         selectRow("0", new Date().toString(), "0",
-                                "0", "", "", "");
-                        spWorker.setSelection(0);
+                                "0", "0", "0");
+                        spClon.setSelection(0);
                         spWorkerZone.setSelection(0);
-                        spActivity.setSelection(0);
+                        spCondicion.setSelection(0);
+                        spEstadoFisico.setSelection(0);
+                        spEstadoSanitario.setSelection(0);
+                        spEstadoSitio.setSelection(0);
                         return;
                     }
 
-                    current_idCosto = firstText;
+                    current_idIP = firstText;
 
                     selectRow(((TextView) t.getChildAt(2)).getText().toString(),
-                            ((TextView) t.getChildAt(1)).getText().toString(),
                             ((TextView) t.getChildAt(4)).getText().toString(),
                             ((TextView) t.getChildAt(6)).getText().toString(),
                             ((TextView) t.getChildAt(8)).getText().toString(),
@@ -834,15 +837,14 @@ public class MainActivity extends AppCompatActivity {
         cuadrilla = myDatabase.getCuadrilla(dniSupervisor);
     }
 
-    public void selectRow(String id_personal, String fecha, String id_workerZone, String id_actividad, String hour,
-                          String advance, String QR) {
+    public void selectRow( String id_workerZone, String id_estadofisico, String id_estadosanitario,
+                          String id_estadositio, String id_condicion, String QR) {
         fecha = fecha;
-        selectSpinnerItemByValue(spWorker, id_personal);
         selectSpinnerItemByValue(spWorkerZone, id_workerZone);
-        selectSpinnerItemByValue(spActivity, id_actividad);
-
-        txtHora.setText(hour);
-        txtAvance.setText(advance);
+        selectSpinnerItemByValue(spEstadoFisico, id_estadofisico);
+        selectSpinnerItemByValue(spEstadoSanitario, id_estadosanitario);
+        selectSpinnerItemByValue(spEstadoSitio, id_estadositio);
+        selectSpinnerItemByValue(spCondicion, id_condicion);
         txtQr.setText(QR);
 
     }

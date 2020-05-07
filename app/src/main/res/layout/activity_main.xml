@@ -107,6 +107,7 @@
                 android:id="@+id/tvCuadrilla"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="Fecha: " />
 
             <LinearLayout
@@ -145,6 +146,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="Agregar trabajador nuevo" />
 
             <Spinner
@@ -152,6 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:visibility="gone"
                 android:layout_weight="0.90" />
 
             <Spinner
@@ -203,6 +206,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:visibility="gone"
                 android:layout_weight="0.90" />
 
 
@@ -220,6 +224,7 @@
                     android:gravity="center"
                     android:hint="horas"
                     android:inputType="number"
+                    android:visibility="gone"
                     android:textColorHint="#717171" />
 
                 <EditText
@@ -231,6 +236,7 @@
                     android:gravity="center"
                     android:hint="Avance"
                     android:inputType="number"
+                    android:visibility="gone"
                     android:textColorHint="#717171" />
 
                 <EditText
@@ -360,16 +366,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Trabajdores"
-                        android:textColor="@android:color/white"
-                        android:textSize="14dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:gravity="center"
                         android:text="Zona Trabajo"
                         android:textColor="@android:color/white"
                         android:textSize="14dp"
@@ -380,7 +376,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Actividad"
+                        android:text="Estado Fisico"
                         android:textColor="@android:color/white"
                         android:textSize="14dp"
                         android:textStyle="bold" />
@@ -390,7 +386,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Horas"
+                        android:text="Estado Sanitario"
                         android:textColor="@android:color/white"
                         android:textSize="14dp"
                         android:textStyle="bold" />
@@ -400,7 +396,17 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:gravity="center"
-                        android:text="Avance"
+                        android:text="Estado Sitio"
+                        android:textColor="@android:color/white"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:text="Condicion"
                         android:textColor="@android:color/white"
                         android:textSize="14dp"
                         android:textStyle="bold" />
